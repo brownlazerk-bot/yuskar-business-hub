@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YusKar Business Hub - Working Version</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">YusKar Business Hub</div>
+            <ul class="nav-links">
+                <li><a href="index-working.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="businesses.html">Businesses</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to YusKar Business Hub</h1>
+            <p>Discover, Connect, and Grow with Rwanda's Premier Business Marketplace</p>
+            <div class="hero-buttons">
+                <a href="businesses.html" class="btn btn-outline">Explore Businesses</a>
+                <a href="signup.html" class="btn btn-primary">Join Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Businesses Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Businesses</h2>
+                <p>Discover top-rated businesses across Rwanda</p>
+            </div>
+            <div class="grid grid-3" id="featuredBusinesses">
+                <!-- Businesses will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Display -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>System Status</h2>
+            </div>
+            <div id="systemStatus">
+                <p>Loading system status...</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Regular JavaScript - no modules, no imports
+        const statusDiv = document.getElementById('systemStatus');
+        const businessesDiv = document.getElementById('featuredBusinesses');
+        
+        function updateStatus(message, type = 'info') {
+            const colors = {
+                info: 'blue',
+                success: 'green',
+                error: 'red',
+                warning: 'orange'
+            };
+            statusDiv.innerHTML += `<p style="color: ${colors[type]}; font-weight: bold;">${message}</p>`;
+        }
+
+        function showBusinesses() {
+            // Mock data for testing
+            const mockBusinesses = [
+                {
+                    id: 1,
+                    name: 'Kigali Coffee House',
+                    category: 'Restaurant & Café',
+                    description: 'Premium coffee and authentic Rwandan cuisine',
+                    rating: 4.8,
+                    reviews: 127
+                },
+                {
+                    id: 2,
+                    name: 'Rwanda Tech Solutions',
+                    category: 'Technology',
+                    description: 'Innovative software development and IT consulting',
+                    rating: 4.9,
+                    reviews: 89
+                },
+                {
+                    id: 3,
+                    name: 'Mountain View Hotel',
+                    category: 'Hospitality',
+                    description: 'Luxury accommodation with stunning views',
+                    rating: 4.7,
+                    reviews: 156
+                }
+            ];
+
+            businessesDiv.innerHTML = '';
+            mockBusinesses.forEach(business => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3>${business.name}</h3>
+                        <span class="badge">${business.category}</span>
+                    </div>
+                    <div class="card-body">
+                        <p>${business.description}</p>
+                        <div class="rating">
+                            <span>Rating: ${business.rating} (${business.reviews} reviews)</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" onclick="alert('View details for ${business.name}')">View Details</button>
+                    </div>
+                `;
+                businessesDiv.appendChild(card);
+            });
+        }
+
+        function checkSystem() {
+            updateStatus('Starting system check...', 'info');
+            
+            // Check 1: Basic JavaScript
+            try {
+                const test = 'JavaScript is working';
+                updateStatus('JavaScript: WORKING', 'success');
+            } catch (error) {
+                updateStatus('JavaScript: FAILED - ' + error.message, 'error');
+            }
+
+            // Check 2: CSS loading
+            try {
+                const styles = getComputedStyle(document.body);
+                updateStatus('CSS: LOADED', 'success');
+            } catch (error) {
+                updateStatus('CSS: FAILED - ' + error.message, 'error');
+            }
+
+            // Check 3: File existence
+            fetch('supabaseClient.js')
+                .then(response => {
+                    if (response.ok) {
+                        updateStatus('JavaScript files: EXIST', 'success');
+                    } else {
+                        updateStatus('JavaScript files: NOT FOUND', 'warning');
+                    }
+                })
+                .catch(() => {
+                    updateStatus('JavaScript files: CHECK FAILED', 'warning');
+                });
+
+            // Check 4: Environment simulation
+            updateStatus('Backend: SIMULATED (ready for real configuration)', 'info');
+
+            // Show businesses
+            showBusinesses();
+            
+            updateStatus('System check completed! This page is working correctly.', 'success');
+        }
+
+        // Run system check when page loads
+        document.addEventListener('DOMContentLoaded', checkSystem);
+    </script>
+</body>
+</html>

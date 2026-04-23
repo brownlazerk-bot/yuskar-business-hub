@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Directory - YusKar Business Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🏢 YusKar Business Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="businesses.html" class="active">Businesses</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero" style="padding: 60px 0;">
+        <div class="container">
+            <h1>Business Directory</h1>
+            <p>Discover amazing businesses across Rwanda</p>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="section">
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <form id="searchForm" class="mb-4">
+                        <div class="grid grid-3">
+                            <div class="form-group">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search businesses...">
+                            </div>
+                            <div class="form-group">
+                                <select id="categoryFilter" class="form-control">
+                                    <option value="all">All Categories</option>
+                                    <option value="Food & Beverage">Food & Beverage</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Hospitality">Hospitality</option>
+                                    <option value="Arts & Crafts">Arts & Crafts</option>
+                                    <option value="Tourism">Tourism</option>
+                                    <option value="Fashion">Fashion</option>
+                                    <option value="Transportation">Transportation</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Retail">Retail</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="sortBy" class="form-control">
+                                    <option value="name">Sort by Name</option>
+                                    <option value="rating">Sort by Rating</option>
+                                    <option value="reviews">Sort by Reviews</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="button" class="btn btn-outline" onclick="resetFilters()">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Listings -->
+    <section class="section">
+        <div class="container">
+            <div class="d-flex justify-between align-center mb-4">
+                <h2>Found <span id="businessCount">12</span> Businesses</h2>
+                <div class="d-flex align-center">
+                    <label style="margin-right: 10px;">View:</label>
+                    <button class="btn btn-sm btn-outline" onclick="setView('grid')">Grid</button>
+                    <button class="btn btn-sm btn-outline" onclick="setView('list')">List</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-3" id="businessGrid">
+                <!-- Business cards will be dynamically loaded here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="text-center mt-4">
+                <button class="btn btn-outline" onclick="previousPage()">Previous</button>
+                <span style="margin: 0 20px;">Page <span id="currentPage">1</span> of <span id="totalPages">3</span></span>
+                <button class="btn btn-outline" onclick="nextPage()">Next</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Browse by Category</h2>
+                <p>Quick access to popular business categories</p>
+            </div>
+            <div class="grid grid-4">
+                <div class="category-card" onclick="filterByCategory('Food & Beverage')">
+                    <div class="category-icon">🍽️</div>
+                    <h3>Food & Beverage</h3>
+                    <p>156 businesses</p>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Technology')">
+                    <div class="category-icon">💻</div>
+                    <h3>Technology</h3>
+                    <p>89 businesses</p>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Hospitality')">
+                    <div class="category-icon">🏨</div>
+                    <h3>Hospitality</h3>
+                    <p>124 businesses</p>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Arts & Crafts')">
+                    <div class="category-icon">🎨</div>
+                    <h3>Arts & Crafts</h3>
+                    <p>67 businesses</p>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Tourism')">
+                    <div class="category-icon">🚗</div>
+                    <h3>Tourism</h3>
+                    <p>45 businesses</p>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Fashion')">
+                    <div class="category-icon">👗</div>
+                    <h3>Fashion</h3>
+                    <p>78 businesses</p>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Transportation')">
+                    <div class="category-icon">🚌</div>
+                    <h3>Transportation</h3>
+                    <p>92 businesses</p>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Healthcare')">
+                    <div class="category-icon">🏥</div>
+                    <h3>Healthcare</h3>
+                    <p>103 businesses</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section">
+        <div class="container text-center">
+            <h2>List Your Business on YusKar Hub</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Join thousands of businesses already benefiting from our platform</p>
+            <a href="signup.html" class="btn btn-primary btn-lg">Add Your Business</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About YusKar Business Hub</h3>
+                    <p>Rwanda's premier business marketplace connecting local businesses with customers and fostering economic growth.</p>
+                    <div class="social-links">
+                        <a href="#" style="margin-right: 1rem;">📘</a>
+                        <a href="#" style="margin-right: 1rem;">🐦</a>
+                        <a href="#" style="margin-right: 1rem;">📷</a>
+                        <a href="#">💼</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="businesses.html">Business Directory</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Businesses</h3>
+                    <ul>
+                        <li><a href="signup.html">List Your Business</a></li>
+                        <li><a href="services.html">Advertising</a></li>
+                        <li><a href="contact.html">Partnerships</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 YusKar Business Hub. All rights reserved. Made with ❤️ in Rwanda</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Business listings data
+        const allBusinesses = [
+            {
+                id: 1,
+                name: 'Rwanda Coffee House',
+                category: 'Food & Beverage',
+                rating: 4.5,
+                reviews: 128,
+                image: 'coffee.jpg',
+                description: 'Premium Rwandan coffee and local cuisine',
+                location: 'Kigali',
+                phone: '+250 788 123 456'
+            },
+            {
+                id: 2,
+                name: 'Kigali Tech Solutions',
+                category: 'Technology',
+                rating: 4.8,
+                reviews: 89,
+                image: 'tech.jpg',
+                description: 'IT solutions and software development',
+                location: 'Kigali',
+                phone: '+250 788 234 567'
+            },
+            {
+                id: 3,
+                name: 'Mountain View Lodge',
+                category: 'Hospitality',
+                rating: 4.3,
+                reviews: 156,
+                image: 'hotel.jpg',
+                description: 'Luxury accommodation with mountain views',
+                location: 'Musanze',
+                phone: '+250 788 345 678'
+            },
+            {
+                id: 4,
+                name: 'Rwanda Crafts Market',
+                category: 'Arts & Crafts',
+                rating: 4.6,
+                reviews: 203,
+                image: 'crafts.jpg',
+                description: 'Traditional Rwandan handicrafts and art',
+                location: 'Kigali',
+                phone: '+250 788 456 789'
+            },
+            {
+                id: 5,
+                name: 'Safari Tours Rwanda',
+                category: 'Tourism',
+                rating: 4.9,
+                reviews: 267,
+                image: 'safari.jpg',
+                description: 'Wildlife safaris and adventure tours',
+                location: 'Kigali',
+                phone: '+250 788 567 890'
+            },
+            {
+                id: 6,
+                name: 'Rwanda Fashion Hub',
+                category: 'Fashion',
+                rating: 4.4,
+                reviews: 94,
+                image: 'fashion.jpg',
+                description: 'Contemporary Rwandan fashion and design',
+                location: 'Kigali',
+                phone: '+250 788 678 901'
+            },
+            {
+                id: 7,
+                name: 'City Express Transport',
+                category: 'Transportation',
+                rating: 4.2,
+                reviews: 178,
+                image: 'transport.jpg',
+                description: 'Reliable transportation services across Rwanda',
+                location: 'Kigali',
+                phone: '+250 788 789 012'
+            },
+            {
+                id: 8,
+                name: 'King Faisal Hospital',
+                category: 'Healthcare',
+                rating: 4.7,
+                reviews: 312,
+                image: 'hospital.jpg',
+                description: 'Premier healthcare services in Kigali',
+                location: 'Kigali',
+                phone: '+250 788 890 123'
+            },
+            {
+                id: 9,
+                name: 'Kigali International School',
+                category: 'Education',
+                rating: 4.6,
+                reviews: 145,
+                image: 'school.jpg',
+                description: 'International education with local values',
+                location: 'Kigali',
+                phone: '+250 788 901 234'
+            },
+            {
+                id: 10,
+                name: 'Nakumatt Supermarket',
+                category: 'Retail',
+                rating: 4.1,
+                reviews: 234,
+                image: 'retail.jpg',
+                description: 'Your one-stop shopping destination',
+                location: 'Kigali',
+                phone: '+250 788 012 345'
+            },
+            {
+                id: 11,
+                name: 'Lake Kivu Resort',
+                category: 'Hospitality',
+                rating: 4.8,
+                reviews: 189,
+                image: 'resort.jpg',
+                description: 'Beachfront luxury on Lake Kivu',
+                location: 'Karongi',
+                phone: '+250 788 123 456'
+            },
+            {
+                id: 12,
+                name: 'Rwanda Digital Agency',
+                category: 'Technology',
+                rating: 4.5,
+                reviews: 76,
+                image: 'digital.jpg',
+                description: 'Digital marketing and web development',
+                location: 'Kigali',
+                phone: '+250 788 234 567'
+            }
+        ];
+
+        let currentPage = 1;
+        const itemsPerPage = 6;
+        let filteredBusinesses = [...allBusinesses];
+
+        // Load businesses on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBusinesses();
+        });
+
+        function loadBusinesses() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const businessesToShow = filteredBusinesses.slice(startIndex, endIndex);
+            
+            const businessGrid = document.getElementById('businessGrid');
+            businessGrid.innerHTML = '';
+            
+            businessesToShow.forEach(business => {
+                const card = createBusinessCard(business);
+                businessGrid.appendChild(card);
+            });
+            
+            updatePagination();
+        }
+
+        function createBusinessCard(business) {
+            const card = document.createElement('div');
+            card.className = 'card business-card';
+            card.innerHTML = `
+                <img src="assets/images/${business.image}" alt="${business.name}" onerror="this.src='assets/images/placeholder.jpg'">
+                <div class="card-body">
+                    <h3>${business.name}</h3>
+                    <p class="category">${business.category}</p>
+                    <div class="rating">
+                        ${generateStars(business.rating)} (${business.reviews} reviews)
+                    </div>
+                    <p>${business.description}</p>
+                    <p><strong>📍 ${business.location}</strong></p>
+                    <p><strong>📞 ${business.phone}</strong></p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary" onclick="viewBusinessDetails(${business.id})">View Details</button>
+                    <button class="btn btn-outline" onclick="contactBusiness(${business.id})">Contact</button>
+                </div>
+            `;
+            return card;
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredBusinesses.length / itemsPerPage);
+            document.getElementById('currentPage').textContent = currentPage;
+            document.getElementById('totalPages').textContent = totalPages;
+            document.getElementById('businessCount').textContent = filteredBusinesses.length;
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadBusinesses();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(filteredBusinesses.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadBusinesses();
+            }
+        }
+
+        function filterByCategory(category) {
+            document.getElementById('categoryFilter').value = category;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+            
+            filteredBusinesses = allBusinesses.filter(business => {
+                const matchesSearch = business.name.toLowerCase().includes(searchTerm) || 
+                                     business.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'all' || business.category === category;
+                return matchesSearch && matchesCategory;
+            });
+            
+            // Sort businesses
+            filteredBusinesses.sort((a, b) => {
+                switch(sortBy) {
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'reviews':
+                        return b.reviews - a.reviews;
+                    default:
+                        return 0;
+                }
+            });
+            
+            currentPage = 1;
+            loadBusinesses();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('sortBy').value = 'name';
+            filteredBusinesses = [...allBusinesses];
+            currentPage = 1;
+            loadBusinesses();
+        }
+
+        function setView(viewType) {
+            const businessGrid = document.getElementById('businessGrid');
+            if (viewType === 'list') {
+                businessGrid.className = 'grid grid-1';
+            } else {
+                businessGrid.className = 'grid grid-3';
+            }
+        }
+
+        function contactBusiness(businessId) {
+            const business = allBusinesses.find(b => b.id === businessId);
+            if (business) {
+                alert(`Contact ${business.name}\n\nPhone: ${business.phone}\nLocation: ${business.location}\n\nYou can also message them through our platform after logging in!`);
+            }
+        }
+
+        // Form submission
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            applyFilters();
+        });
+
+        // Category filter change
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortBy').addEventListener('change', applyFilters);
+    </script>
+</body>
+</html>

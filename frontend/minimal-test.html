@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Test</title>
+</head>
+<body>
+    <h1>Minimal Test - No External Dependencies</h1>
+    <div id="status">Loading...</div>
+
+    <script>
+        // No modules, no imports, just basic JavaScript
+        document.getElementById('status').innerHTML = 'Basic JavaScript: WORKING';
+        console.log('Basic JavaScript is working');
+        
+        // Test if we can read files
+        fetch('supabaseClient.js')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('status').innerHTML += '<br>supabaseClient.js: FILE EXISTS';
+                } else {
+                    document.getElementById('status').innerHTML += '<br>supabaseClient.js: FILE NOT FOUND';
+                }
+            })
+            .catch(error => {
+                document.getElementById('status').innerHTML += '<br>File check error: ' + error.message;
+            });
+    </script>
+</body>
+</html>

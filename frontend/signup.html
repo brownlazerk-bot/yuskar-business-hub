@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - YusKar Business Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🏢 YusKar Business Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="businesses.html">Businesses</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sign Up Section -->
+    <section class="section" style="min-height: 80vh; display: flex; align-items: center;">
+        <div class="container">
+            <div class="grid grid-2" style="align-items: center;">
+                <!-- Left Column - Sign Up Form -->
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h2>Create Your Account</h2>
+                            <p>Join YusKar Business Hub and grow your business</p>
+                            
+                            <!-- Account Type Selection -->
+                            <div class="mb-4">
+                                <label style="font-weight: 500; margin-bottom: 10px; display: block;">Account Type *</label>
+                                <div class="grid grid-2" style="gap: 10px;">
+                                    <label class="d-flex align-center p-3" style="border: 2px solid var(--border-color); border-radius: 5px; cursor: pointer;">
+                                        <input type="radio" name="accountType" value="business" checked style="margin-right: 10px;">
+                                        <div>
+                                            <strong>Business Owner</strong>
+                                            <div style="font-size: 0.9rem; color: var(--text-light);">List and manage your business</div>
+                                        </div>
+                                    </label>
+                                    <label class="d-flex align-center p-3" style="border: 2px solid var(--border-color); border-radius: 5px; cursor: pointer;">
+                                        <input type="radio" name="accountType" value="customer" style="margin-right: 10px;">
+                                        <div>
+                                            <strong>Customer</strong>
+                                            <div style="font-size: 0.9rem; color: var(--text-light);">Discover and review businesses</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <form id="signupForm">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-control" required placeholder="Enter your first name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-control" required placeholder="Enter your last name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" class="form-control" required placeholder="Enter your email">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" class="form-control" required placeholder="+250 7XX XXX XXX">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="password">Password *</label>
+                                    <input type="password" id="password" name="password" class="form-control" required placeholder="Create a strong password">
+                                    <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 5px;">
+                                        Minimum 8 characters with at least 1 uppercase, 1 number, and 1 special character
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm Password *</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required placeholder="Confirm your password">
+                                </div>
+                                
+                                <!-- Business Owner Fields -->
+                                <div id="businessFields" style="display: block;">
+                                    <div class="form-group">
+                                        <label for="businessName">Business Name</label>
+                                        <input type="text" id="businessName" name="businessName" class="form-control" placeholder="Your business name">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="businessCategory">Business Category</label>
+                                        <select id="businessCategory" name="businessCategory" class="form-control">
+                                            <option value="">Select category</option>
+                                            <option value="Food & Beverage">Food & Beverage</option>
+                                            <option value="Technology">Technology</option>
+                                            <option value="Hospitality">Hospitality</option>
+                                            <option value="Arts & Crafts">Arts & Crafts</option>
+                                            <option value="Tourism">Tourism</option>
+                                            <option value="Fashion">Fashion</option>
+                                            <option value="Transportation">Transportation</option>
+                                            <option value="Healthcare">Healthcare</option>
+                                            <option value="Education">Education</option>
+                                            <option value="Retail">Retail</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="d-flex align-center">
+                                        <input type="checkbox" id="terms" name="terms" required style="margin-right: 10px;">
+                                        I agree to the <a href="#" style="color: var(--secondary-color);">Terms of Service</a> and <a href="#" style="color: var(--secondary-color);">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="d-flex align-center">
+                                        <input type="checkbox" id="newsletter" name="newsletter" style="margin-right: 10px;">
+                                        Send me updates and business tips via email
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                            </form>
+                            
+                            <div class="text-center mt-4">
+                                <p>Already have an account? <a href="login.html" style="color: var(--secondary-color);">Login here</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Benefits -->
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Why Choose YusKar Business Hub?</h3>
+                            
+                            <div class="mb-4">
+                                <h4>🚀 For Business Owners</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="margin-bottom: 0.5rem;">✓ List your business for free</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Reach thousands of customers</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Get customer reviews and ratings</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Access business analytics</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Connect with other businesses</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h4>👥 For Customers</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="margin-bottom: 0.5rem;">✓ Discover local businesses</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Read authentic reviews</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Save favorite businesses</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Get exclusive offers</li>
+                                    <li style="margin-bottom: 0.5rem;">✓ Share your experiences</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="text-center">
+                                <h4>Join 50,000+ Happy Users</h4>
+                                <p>Trusted by businesses and customers across Rwanda</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Platform Features</h2>
+                <p>Everything you need to succeed</p>
+            </div>
+            <div class="grid grid-4">
+                <div class="text-center">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--secondary-color);">📱</div>
+                    <h4>Mobile Friendly</h4>
+                    <p>Access your account from any device</p>
+                </div>
+                <div class="text-center">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--success-color);">🔒</div>
+                    <h4>Secure Platform</h4>
+                    <p>Your data is always protected</p>
+                </div>
+                <div class="text-center">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--warning-color);">📊</div>
+                    <h4>Analytics</h4>
+                    <p>Track your business performance</p>
+                </div>
+                <div class="text-center">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent-color);">💬</div>
+                    <h4>24/7 Support</h4>
+                    <p>Get help whenever you need it</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About YusKar Business Hub</h3>
+                    <p>Rwanda's premier business marketplace connecting local businesses with customers and fostering economic growth.</p>
+                    <div class="social-links">
+                        <a href="#" style="margin-right: 1rem;">📘</a>
+                        <a href="#" style="margin-right: 1rem;">🐦</a>
+                        <a href="#" style="margin-right: 1rem;">📷</a>
+                        <a href="#">💼</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="businesses.html">Business Directory</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Businesses</h3>
+                    <ul>
+                        <li><a href="signup.html">List Your Business</a></li>
+                        <li><a href="services.html">Advertising</a></li>
+                        <li><a href="contact.html">Partnerships</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 YusKar Business Hub. All rights reserved. Made with ❤️ in Rwanda</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Account type toggle
+        document.querySelectorAll('input[name="accountType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const businessFields = document.getElementById('businessFields');
+                if (this.value === 'business') {
+                    businessFields.style.display = 'block';
+                } else {
+                    businessFields.style.display = 'none';
+                }
+            });
+        });
+
+        // Enhanced form validation
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const accountType = document.querySelector('input[name="accountType"]:checked').value;
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Validation
+            if (!firstName || firstName.length < 2) {
+                showAlert('Please enter a valid first name (at least 2 characters)', 'error');
+                return;
+            }
+            
+            if (!lastName || lastName.length < 2) {
+                showAlert('Please enter a valid last name (at least 2 characters)', 'error');
+                return;
+            }
+            
+            if (!email || !isValidEmail(email)) {
+                showAlert('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            if (!phone || !isValidPhone(phone)) {
+                showAlert('Please enter a valid phone number (format: +250 7XX XXX XXX)', 'error');
+                return;
+            }
+            
+            if (!password) {
+                showAlert('Please enter a password', 'error');
+                return;
+            }
+            
+            if (!isStrongPassword(password)) {
+                showAlert('Password must be at least 8 characters with 1 uppercase, 1 number, and 1 special character', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+            
+            if (!terms) {
+                showAlert('Please accept the Terms of Service and Privacy Policy', 'error');
+                return;
+            }
+            
+            // Business-specific validation
+            if (accountType === 'business') {
+                const businessName = document.getElementById('businessName').value.trim();
+                const businessCategory = document.getElementById('businessCategory').value;
+                
+                if (!businessName) {
+                    showAlert('Please enter your business name', 'error');
+                    return;
+                }
+            }
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Creating Account...';
+            submitBtn.disabled = true;
+            
+            // Simulate account creation
+            setTimeout(() => {
+                const userData = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone,
+                    accountType: accountType,
+                    signupTime: new Date().toISOString()
+                };
+                
+                if (accountType === 'business') {
+                    userData.businessName = document.getElementById('businessName').value.trim();
+                    userData.businessCategory = document.getElementById('businessCategory').value;
+                }
+                
+                // Store user data (in real app, this would be sent to server)
+                localStorage.setItem('user', JSON.stringify(userData));
+                localStorage.setItem('userType', accountType === 'business' ? 'business' : 'user');
+                
+                showAlert('Account created successfully! Redirecting to login...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }, 1500);
+        });
+
+        // Validation functions
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^\+250\s?7\d{2}\s?\d{3}\s?\d{3}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function isStrongPassword(password) {
+            // At least 8 characters, 1 uppercase, 1 number, 1 special character
+            const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            return passwordRegex.test(password);
+        }
+
+        // Auto-format phone number
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            
+            // Add +250 prefix if not present
+            if (value.length > 0 && !value.startsWith('+250')) {
+                value = '+250' + value;
+            }
+            
+            // Format as +250 7XX XXX XXX
+            if (value.length >= 7) {
+                value = value.slice(0, 5) + ' ' + value.slice(5, 8) + ' ' + value.slice(8, 11);
+            } else if (value.length >= 5) {
+                value = value.slice(0, 5) + ' ' + value.slice(5);
+            }
+            
+            e.target.value = value;
+        });
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function(e) {
+            const password = e.target.value;
+            let strengthIndicator = document.getElementById('passwordStrength');
+            
+            if (!strengthIndicator) {
+                const indicator = document.createElement('div');
+                indicator.id = 'passwordStrength';
+                indicator.style.marginTop = '5px';
+                indicator.style.fontSize = '0.8rem';
+                e.target.parentNode.appendChild(indicator);
+                strengthIndicator = indicator;
+            }
+            
+            if (password.length === 0) {
+                strengthIndicator.textContent = '';
+                return;
+            }
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[@$!%*?&]/.test(password)) strength++;
+            
+            const strengthTexts = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            const strengthColors = ['', '#e74c3c', '#f39c12', '#f39c12', '#27ae60'];
+            
+            strengthIndicator.textContent = `Password strength: ${strengthTexts[strength]}`;
+            strengthIndicator.style.color = strengthColors[strength];
+        });
+
+        // Auto-focus first name field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('firstName').focus();
+        });
+    </script>
+</body>
+</html>

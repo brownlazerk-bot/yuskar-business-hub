@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - YusKar Business Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="module">
+        import { supabase } from '../backend/supabaseClient.js';
+        import { getCurrentUser } from '../backend/auth.js';
+        
+        // Check if user is logged in and is admin
+        window.addEventListener('DOMContentLoaded', async () => {
+            const user = await getCurrentUser();
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', user?.id)
+                .single();
+            
+            if (!user || profile?.role !== 'admin') {
+                // Redirect to login if not authenticated or not admin
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load admin dashboard data
+            loadAdminDashboard();
+        });
+    </script>
+</head>
+<body>
+    <!-- Dashboard Layout -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>🏢 YusKar Hub</h3>
+                <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Admin Dashboard</p>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="#" data-section="overview" class="active">📊 Overview</a></li>
+                <li><a href="#" data-section="businesses">🏢 Businesses</a></li>
+                <li><a href="#" data-section="users">👥 Users</a></li>
+                <li><a href="#" data-section="pending">⏳ Pending Approvals</a></li>
+                <li><a href="#" data-section="analytics">📈 Analytics</a></li>
+                <li><a href="#" data-section="settings">⚙️ Settings</a></li>
+                <li><a href="#" onclick="logout()" style="color: #e74c3c;">🚪 Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div>
+                    <h2>Welcome back, <span id="adminName">Admin</span>!</h2>
+                    <p style="color: var(--text-light); margin: 0;">Manage the platform and monitor performance</p>
+                </div>
+                <div class="d-flex align-center">
+                    <div style="position: relative; margin-right: 1rem;">
+                        <button id="adminNotificationBell" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; position: relative;">
+                            🔔
+                            <span style="position: absolute; top: 0; right: 0; background: var(--accent-color); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center;">5</span>
+                        </button>
+                    </div>
+                    <button class="btn btn-primary" onclick="exportData()">📊 Export Data</button>
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <section id="overview" class="dashboard-section">
+                <h3>Platform Overview</h3>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">🏢</div>
+                        <div class="stat-content">
+                            <h3 id="totalBusinessesAdmin">1,247</h3>
+                            <p>Total Businesses</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">👥</div>
+                        <div class="stat-content">
+                            <h3 id="totalUsersAdmin">5,832</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">📈</div>
+                        <div class="stat-content">
+                            <h3 id="activeListingsAdmin">892</h3>
+                            <p>Active Listings</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">💰</div>
+                        <div class="stat-content">
+                            <h3 id="monthlyRevenue">$24,650</h3>
+                            <p>Monthly Revenue</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Tables -->
+                <div class="grid grid-2" style="margin-top: 2rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Recent Registrations</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="registrationChart" style="height: 200px; background: var(--light-color); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                                📊 Registration Trend Chart
+                            </canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Revenue Overview</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueChart" style="height: 200px; background: var(--light-color); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                                💰 Revenue Trend Chart
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h4>Recent Activity</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>User</th>
+                                        <th>Action</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2 hours ago</td>
+                                        <td>Marie Uwimana</td>
+                                        <td>Registered new business</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3 hours ago</td>
+                                        <td>Jean Mugisha</td>
+                                        <td>Upgraded to Professional</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5 hours ago</td>
+                                        <td>Sarah Niyonzima</td>
+                                        <td>Submitted business for review</td>
+                                        <td><span class="badge badge-warning">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1 day ago</td>
+                                        <td>Eric Kamanzi</td>
+                                        <td>Updated business profile</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Businesses Section -->
+            <section id="businesses" class="dashboard-section" style="display: none;">
+                <div class="d-flex justify-between align-center mb-4">
+                    <h3>Business Management</h3>
+                    <div>
+                        <button class="btn btn-primary" onclick="addBusiness()">➕ Add Business</button>
+                        <button class="btn btn-outline" onclick="exportBusinesses()">📥 Export</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex gap-3 mb-4">
+                            <input type="text" class="form-control" placeholder="Search businesses..." id="businessSearch">
+                            <select class="form-control" id="businessFilter">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="pending">Pending</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="filterBusinesses()">Search</button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Business Name</th>
+                                        <th>Owner</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Joined</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="businessesTableBody">
+                                    <!-- Businesses will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users" class="dashboard-section" style="display: none;">
+                <div class="d-flex justify-between align-center mb-4">
+                    <h3>User Management</h3>
+                    <div>
+                        <button class="btn btn-primary" onclick="addUser()">➕ Add User</button>
+                        <button class="btn btn-outline" onclick="exportUsers()">📥 Export</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex gap-3 mb-4">
+                            <input type="text" class="form-control" placeholder="Search users..." id="userSearch">
+                            <select class="form-control" id="userFilter">
+                                <option value="all">All Roles</option>
+                                <option value="admin">Admin</option>
+                                <option value="business">Business Owner</option>
+                                <option value="user">Customer</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="filterUsers()">Search</button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Join Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- Users will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pending Approvals Section -->
+            <section id="pending" class="dashboard-section" style="display: none;">
+                <h3>Pending Approvals</h3>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-between align-center mb-4">
+                            <h4>Business Registrations Awaiting Approval</h4>
+                            <span class="badge badge-warning">12 Pending</span>
+                        </div>
+                        
+                        <div id="pendingApprovals">
+                            <!-- Pending approvals will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="dashboard-section" style="display: none;">
+                <h3>Platform Analytics</h3>
+                
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>User Growth</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="userGrowthChart" style="height: 300px; background: var(--light-color); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                                📈 User Growth Chart
+                            </canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Business Categories</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="categoryChart" style="height: 300px; background: var(--light-color); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                                🏢 Category Distribution Chart
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-3" style="margin-top: 2rem;">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h4>Avg. Session Duration</h4>
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--secondary-color);">4m 32s</div>
+                            <small style="color: var(--success-color);">↑ 12% from last month</small>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h4>Bounce Rate</h4>
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--warning-color);">32.5%</div>
+                            <small style="color: var(--success-color);">↓ 5% from last month</small>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h4>Conversion Rate</h4>
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--success-color);">8.7%</div>
+                            <small style="color: var(--success-color);">↑ 2% from last month</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="dashboard-section" style="display: none;">
+                <h3>Admin Settings</h3>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Platform Configuration</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="adminSettingsForm">
+                            <div class="form-group">
+                                <label for="siteName">Site Name</label>
+                                <input type="text" id="siteName" class="form-control" value="YusKar Business Hub">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="siteEmail">Site Email</label>
+                                <input type="email" id="siteEmail" class="form-control" value="info@yuskar.rw">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="maintenanceMode">Maintenance Mode</label>
+                                <select id="maintenanceMode" class="form-control">
+                                    <option value="off">Off</option>
+                                    <option value="on">On</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="d-flex align-center">
+                                    <input type="checkbox" id="emailNotifications" checked style="margin-right: 10px;">
+                                    Enable email notifications
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="d-flex align-center">
+                                    <input type="checkbox" id="autoApprove" style="margin-right: 10px;">
+                                    Auto-approve business registrations
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Load admin data
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminData();
+            loadBusinesses();
+            loadUsers();
+            loadPendingApprovals();
+            initializeAdminDashboard();
+        });
+
+        function loadAdminData() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            document.getElementById('adminName').textContent = user.name || 'Admin';
+        }
+
+        function loadBusinesses() {
+            const businesses = [
+                { id: 1, name: 'Rwanda Coffee House', owner: 'Marie Uwimana', category: 'Food & Beverage', status: 'active', joined: '2024-01-15' },
+                { id: 2, name: 'Kigali Tech Solutions', owner: 'Jean Mugisha', category: 'Technology', status: 'active', joined: '2024-01-20' },
+                { id: 3, name: 'Mountain View Lodge', owner: 'Sarah Niyonzima', category: 'Hospitality', status: 'pending', joined: '2024-02-01' },
+                { id: 4, name: 'Rwanda Crafts Market', owner: 'Alice Brown', category: 'Arts & Crafts', status: 'active', joined: '2024-02-10' },
+                { id: 5, name: 'Safari Tours Rwanda', owner: 'Bob Johnson', category: 'Tourism', status: 'suspended', joined: '2024-02-15' }
+            ];
+
+            const tbody = document.getElementById('businessesTableBody');
+            tbody.innerHTML = '';
+
+            businesses.forEach(business => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${business.id}</td>
+                    <td>${business.name}</td>
+                    <td>${business.owner}</td>
+                    <td>${business.category}</td>
+                    <td><span class="badge badge-${business.status === 'active' ? 'success' : business.status === 'pending' ? 'warning' : 'danger'}">${business.status}</span></td>
+                    <td>${business.joined}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editBusiness(${business.id})">Edit</button>
+                        <button class="btn btn-sm btn-${business.status === 'active' ? 'warning' : 'success'}" onclick="toggleBusinessStatus(${business.id})">${business.status === 'active' ? 'Suspend' : 'Activate'}</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteBusiness(${business.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadUsers() {
+            const users = [
+                { id: 1, name: 'John Doe', email: 'john@example.com', role: 'User', status: 'Active', joinDate: '2024-01-15' },
+                { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Business Owner', status: 'Active', joinDate: '2024-01-20' },
+                { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Pending', joinDate: '2024-02-01' },
+                { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'Business Owner', status: 'Active', joinDate: '2024-02-10' },
+                { id: 5, name: 'Charlie Wilson', email: 'charlie@example.com', role: 'User', status: 'Inactive', joinDate: '2024-02-15' }
+            ];
+
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td><span class="badge badge-${user.status === 'Active' ? 'success' : user.status === 'Pending' ? 'warning' : 'danger'}">${user.status}</span></td>
+                    <td>${user.joinDate}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editUser(${user.id})">Edit</button>
+                        <button class="btn btn-sm btn-${user.status === 'Active' ? 'warning' : 'success'}" onclick="toggleUserStatus(${user.id})">${user.status === 'Active' ? 'Deactivate' : 'Activate'}</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadPendingApprovals() {
+            const pending = [
+                { id: 1, name: 'Mountain View Lodge', owner: 'Sarah Niyonzima', category: 'Hospitality', submitted: '2024-02-01', description: 'Luxury accommodation near Volcanoes National Park' },
+                { id: 2, name: 'Rwanda Fashion Hub', owner: 'Grace Mukamana', category: 'Fashion', submitted: '2024-02-03', description: 'Contemporary Rwandan fashion and design studio' },
+                { id: 3, name: 'City Express Transport', owner: 'Eric Niyonzima', category: 'Transportation', submitted: '2024-02-05', description: 'Reliable transportation services across Rwanda' }
+            ];
+
+            const container = document.getElementById('pendingApprovals');
+            container.innerHTML = '';
+
+            pending.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card mb-3';
+                card.innerHTML = `
+                    <div class="card-body">
+                        <div class="d-flex justify-between align-center mb-3">
+                            <div>
+                                <h5>${item.name}</h5>
+                                <p class="mb-1"><strong>Owner:</strong> ${item.owner}</p>
+                                <p class="mb-1"><strong>Category:</strong> ${item.category}</p>
+                                <p class="mb-1"><strong>Submitted:</strong> ${item.submitted}</p>
+                                <p>${item.description}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="badge badge-warning">Pending</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-success" onclick="approveBusiness(${item.id})">✓ Approve</button>
+                            <button class="btn btn-outline" onclick="reviewBusiness(${item.id})">📄 Review</button>
+                            <button class="btn btn-danger" onclick="rejectBusiness(${item.id})">✕ Reject</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function initializeAdminDashboard() {
+            // Sidebar menu functionality
+            document.querySelectorAll('.sidebar-menu a[data-section]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    showAdminSection(section);
+                    
+                    // Update active state
+                    document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function showAdminSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        }
+
+        // Action functions
+        function editBusiness(id) {
+            showAlert(`Editing business ${id}`, 'info');
+        }
+
+        function toggleBusinessStatus(id) {
+            showAlert(`Toggling status for business ${id}`, 'success');
+            loadBusinesses();
+        }
+
+        function deleteBusiness(id) {
+            if (confirm('Are you sure you want to delete this business?')) {
+                showAlert(`Business ${id} deleted successfully`, 'success');
+                loadBusinesses();
+            }
+        }
+
+        function approveBusiness(id) {
+            showAlert(`Business ${id} approved successfully!`, 'success');
+            loadPendingApprovals();
+        }
+
+        function rejectBusiness(id) {
+            if (confirm('Are you sure you want to reject this business?')) {
+                showAlert(`Business ${id} rejected`, 'warning');
+                loadPendingApprovals();
+            }
+        }
+
+        function reviewBusiness(id) {
+            showAlert(`Reviewing business ${id}`, 'info');
+        }
+
+        function addBusiness() {
+            showAlert('Add business feature coming soon!', 'info');
+        }
+
+        function addUser() {
+            showAlert('Add user feature coming soon!', 'info');
+        }
+
+        function exportData() {
+            alert('Export functionality would be implemented here');
+        }
+
+        function exportBusinesses() {
+            alert('Exporting businesses data...');
+        }
+
+        function exportUsers() {
+            alert('Exporting users data...');
+        }
+
+        function filterBusinesses() {
+            showAlert('Filtering businesses...', 'info');
+        }
+
+        function filterUsers() {
+            const users = [
+                { id: 1, name: 'John Doe', email: 'john@example.com', role: 'User', status: 'Active', joinDate: '2024-01-15' },
+                { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Business Owner', status: 'Active', joinDate: '2024-01-20' },
+                { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Pending', joinDate: '2024-02-01' },
+                { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'Business Owner', status: 'Active', joinDate: '2024-02-10' },
+                { id: 5, name: 'Charlie Wilson', email: 'charlie@example.com', role: 'User', status: 'Inactive', joinDate: '2024-02-15' }
+            ];
+
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td><span class="badge badge-${user.status === 'Active' ? 'success' : user.status === 'Pending' ? 'warning' : 'danger'}">${user.status}</span></td>
+                    <td>${user.joinDate}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editUser(${user.id})">Edit</button>
+                        <button class="btn btn-sm btn-${user.status === 'Active' ? 'warning' : 'success'}" onclick="toggleUserStatus(${user.id})">${user.status === 'Active' ? 'Deactivate' : 'Activate'}</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+    </script>
+        
+        // Import admin functions
+        import { getAdminDashboardData, getAllBusinesses, approveBusiness, rejectBusiness, getPendingApprovals, getContactMessages } from '../backend/admin.js';
+        
+        // Load admin dashboard data
+        async function loadAdminDashboard() {
+            try {
+                const result = await getAdminDashboardData();
+                if (result.success) {
+                    displayAdminDashboardData(result.data);
+                } else {
+                    alert('Error loading dashboard: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Dashboard load error:', error);
+                alert('An error occurred while loading admin dashboard.');
+            }
+        }
+        
+        // Display admin dashboard data
+        function displayAdminDashboardData(data) {
+            // Update statistics
+            updateStatCard('totalBusinessesAdmin', data.statistics.totalBusinesses);
+            updateStatCard('totalUsersAdmin', data.statistics.totalUsers);
+            updateStatCard('activeListingsAdmin', data.statistics.activeBusinesses);
+            updateStatCard('monthlyRevenue', '$' + data.statistics.monthlyRevenue);
+            
+            // Load recent activity
+            loadRecentActivity(data.recentActivity);
+        }
+        
+        // Load recent activity
+        function loadRecentActivity(activities) {
+            const container = document.getElementById('recentActivity');
+            if (container && activities) {
+                container.innerHTML = activities.map(activity => `
+                    <tr>
+                        <td>${formatDate(activity.timestamp)}</td>
+                        <td>${activity.owner_name}</td>
+                        <td>${activity.title}</td>
+                        <td><span class="badge badge-${activity.status === 'Completed' ? 'success' : activity.status === 'Pending' ? 'warning' : 'danger'}">${activity.status}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        // Update stat card
+        function updateStatCard(id, value) {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+        
+        // Global functions for onclick handlers
+        window.approveBusiness = approveBusiness;
+        window.rejectBusiness = rejectBusiness;
+        window.exportData = function() {
+            alert('Export functionality would be implemented here');
+        };
+    </script>
+</body>
+</html>

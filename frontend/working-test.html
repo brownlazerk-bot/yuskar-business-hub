@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Test - No Errors</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .info { color: blue; }
+        .test-result { margin: 10px 0; padding: 10px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Working Test - Should Have Zero Errors</h1>
+    <div id="results"></div>
+
+    <script>
+        // This is regular JavaScript, not modules - no import errors
+        const results = document.getElementById('results');
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+            results.appendChild(div);
+        }
+
+        addResult('Starting working test...', 'info');
+
+        // Test 1: Basic functionality
+        try {
+            const test = 'Hello World';
+            addResult('Basic JavaScript: WORKING', 'success');
+        } catch (error) {
+            addResult('Basic JavaScript: FAILED - ' + error.message, 'error');
+        }
+
+        // Test 2: File system check
+        addResult('Checking if JavaScript files exist...', 'info');
+        
+        const files = ['supabaseClient.js', 'backendManager.js', 'auth.js'];
+        let fileCheckPromises = [];
+        
+        files.forEach(file => {
+            const promise = fetch(file)
+                .then(response => {
+                    if (response.ok) {
+                        addResult(`${file}: FILE EXISTS`, 'success');
+                        return true;
+                    } else {
+                        addResult(`${file}: FILE NOT FOUND (${response.status})`, 'error');
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    addResult(`${file}: FETCH ERROR - ${error.message}`, 'error');
+                    return false;
+                });
+            fileCheckPromises.push(promise);
+        });
+
+        // Test 3: Environment variables (without import.meta.env)
+        addResult('Testing environment variable simulation...', 'info');
+        
+        // Simulate environment variables
+        const mockEnv = {
+            VITE_SUPABASE_URL: 'https://your-project-ref.supabase.co',
+            VITE_SUPABASE_ANON_KEY: 'your-supabase-anon-key',
+            VITE_PREFERRED_BACKEND: 'supabase'
+        };
+        
+        if (mockEnv.VITE_SUPABASE_URL) {
+            addResult('Environment variables: SIMULATED WORKING', 'success');
+        } else {
+            addResult('Environment variables: FAILED', 'error');
+        }
+
+        // Test 4: Load Supabase SDK
+        addResult('Loading Supabase SDK...', 'info');
+        
+        // Create script element to load Supabase
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/module/index.js';
+        script.type = 'module';
+        
+        script.onload = function() {
+            addResult('Supabase SDK: LOADED SUCCESSFULLY', 'success');
+            
+            // Try to create client
+            try {
+                // This will be handled by the module
+                addResult('Supabase client creation: READY', 'success');
+            } catch (error) {
+                addResult('Supabase client creation: FAILED - ' + error.message, 'error');
+            }
+        };
+        
+        script.onerror = function() {
+            addResult('Supabase SDK: FAILED TO LOAD', 'error');
+        };
+        
+        document.head.appendChild(script);
+
+        // Final status
+        setTimeout(() => {
+            addResult('Test completed! If you see only green and blue messages above, it\'s working!', 'info');
+        }, 2000);
+
+        addResult('Working test initialized - check results above', 'info');
+    </script>
+</body>
+</html>

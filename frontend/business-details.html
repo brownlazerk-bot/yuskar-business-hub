@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Details - YusKar Business Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🏢 YusKar Business Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="businesses.html">Businesses</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Business Details Content -->
+    <section class="section">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <div class="mb-4">
+                <a href="businesses.html" style="color: var(--text-light);">← Back to Businesses</a>
+            </div>
+
+            <div class="grid grid-2">
+                <!-- Left Column - Business Info -->
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <img id="businessImage" src="assets/images/coffee.jpg" alt="Business Image" style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px; margin-bottom: 1rem;" onerror="this.src='assets/images/placeholder.jpg'">
+                            
+                            <h1 id="businessName">Rwanda Coffee House</h1>
+                            <p id="businessCategory" style="color: var(--secondary-color); font-weight: 500;">Food & Beverage</p>
+                            
+                            <div class="rating mb-3">
+                                <span id="businessRating" style="color: var(--warning-color);">★★★★☆ 4.5</span>
+                                <span id="businessReviews" style="color: var(--text-light);">(128 reviews)</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <h3>About</h3>
+                                <p id="businessDescription">Premium Rwandan coffee and local cuisine. Experience the authentic taste of Rwanda with our carefully selected coffee beans and traditional dishes prepared by expert chefs.</p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h3>Business Information</h3>
+                                <p><strong>📍 Location:</strong> <span id="businessLocation">Kigali, KN 4 Ave</span></p>
+                                <p><strong>📞 Phone:</strong> <span id="businessPhone">+250 788 123 456</span></p>
+                                <p><strong>📧 Email:</strong> <span id="businessEmail">info@rwandacoffee.rw</span></p>
+                                <p><strong>🌐 Website:</strong> <a href="#" id="businessWebsite">www.rwandacoffee.rw</a></p>
+                                <p><strong>⏰ Hours:</strong> <span id="businessHours">Mon-Fri: 7AM-10PM, Sat-Sun: 8AM-11PM</span></p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h3>Services</h3>
+                                <div id="businessServices">
+                                    <span class="badge badge-info">Coffee Roasting</span>
+                                    <span class="badge badge-info">Local Cuisine</span>
+                                    <span class="badge badge-info">Catering</span>
+                                    <span class="badge badge-info">Event Space</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h3>Features</h3>
+                                <div id="businessFeatures">
+                                    <span class="badge badge-success">WiFi Available</span>
+                                    <span class="badge badge-success">Outdoor Seating</span>
+                                    <span class="badge badge-success">Parking</span>
+                                    <span class="badge badge-success">Card Payment</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Actions and Reviews -->
+                <div>
+                    <!-- Contact Card -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3>Contact Business</h3>
+                            <div class="mb-3">
+                                <button class="btn btn-primary w-100 mb-2" onclick="callBusiness()">📞 Call Now</button>
+                                <button class="btn btn-outline w-100 mb-2" onclick="emailBusiness()">📧 Send Email</button>
+                                <button class="btn btn-outline w-100 mb-2" onclick="sendMessage()">💬 Send Message</button>
+                                <button class="btn btn-outline w-100" onclick="getDirections()">🗺️ Get Directions</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Share Card -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3>Share Business</h3>
+                            <div class="d-flex justify-between">
+                                <button class="btn btn-outline" onclick="shareOnFacebook()">📘</button>
+                                <button class="btn btn-outline" onclick="shareOnTwitter()">🐦</button>
+                                <button class="btn btn-outline" onclick="shareOnWhatsApp()">📱</button>
+                                <button class="btn btn-outline" onclick="copyLink()">🔗</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Customer Reviews</h3>
+                            <div class="mb-3">
+                                <button class="btn btn-primary w-100" onclick="writeReview()">Write a Review</button>
+                            </div>
+                            
+                            <div id="reviewsList">
+                                <!-- Reviews will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Businesses -->
+    <section class="section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Related Businesses</h2>
+                <p>Similar businesses you might like</p>
+            </div>
+            <div class="grid grid-3" id="relatedBusinesses">
+                <!-- Related businesses will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About YusKar Business Hub</h3>
+                    <p>Rwanda's premier business marketplace connecting local businesses with customers and fostering economic growth.</p>
+                    <div class="social-links">
+                        <a href="#" style="margin-right: 1rem;">📘</a>
+                        <a href="#" style="margin-right: 1rem;">🐦</a>
+                        <a href="#" style="margin-right: 1rem;">📷</a>
+                        <a href="#">💼</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="businesses.html">Business Directory</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Businesses</h3>
+                    <ul>
+                        <li><a href="signup.html">List Your Business</a></li>
+                        <li><a href="services.html">Advertising</a></li>
+                        <li><a href="contact.html">Partnerships</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 YusKar Business Hub. All rights reserved. Made with ❤️ in Rwanda</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Business data
+        const businessData = {
+            1: {
+                name: 'Rwanda Coffee House',
+                category: 'Food & Beverage',
+                rating: 4.5,
+                reviews: 128,
+                image: 'coffee.jpg',
+                description: 'Premium Rwandan coffee and local cuisine. Experience the authentic taste of Rwanda with our carefully selected coffee beans and traditional dishes prepared by expert chefs.',
+                location: 'Kigali, KN 4 Ave',
+                phone: '+250 788 123 456',
+                email: 'info@rwandacoffee.rw',
+                website: 'www.rwandacoffee.rw',
+                hours: 'Mon-Fri: 7AM-10PM, Sat-Sun: 8AM-11PM',
+                services: ['Coffee Roasting', 'Local Cuisine', 'Catering', 'Event Space'],
+                features: ['WiFi Available', 'Outdoor Seating', 'Parking', 'Card Payment']
+            },
+            2: {
+                name: 'Kigali Tech Solutions',
+                category: 'Technology',
+                rating: 4.8,
+                reviews: 89,
+                image: 'tech.jpg',
+                description: 'Leading IT solutions provider offering software development, web design, and digital transformation services for businesses of all sizes.',
+                location: 'Kigali, Kiyovu',
+                phone: '+250 788 234 567',
+                email: 'contact@kigalitech.rw',
+                website: 'www.kigalitech.rw',
+                hours: 'Mon-Fri: 8AM-6PM, Sat: 9AM-2PM',
+                services: ['Software Development', 'Web Design', 'IT Consulting', 'Digital Marketing'],
+                features: ['Expert Team', '24/7 Support', 'Custom Solutions', 'Affordable Pricing']
+            },
+            3: {
+                name: 'Mountain View Lodge',
+                category: 'Hospitality',
+                rating: 4.3,
+                reviews: 156,
+                image: 'hotel.jpg',
+                description: 'Luxury accommodation with breathtaking mountain views. Experience Rwandan hospitality at its finest with modern amenities and traditional charm.',
+                location: 'Musanze, Near Volcanoes National Park',
+                phone: '+250 788 345 678',
+                email: 'info@mountainviewlodge.rw',
+                website: 'www.mountainviewlodge.rw',
+                hours: '24/7',
+                services: ['Accommodation', 'Restaurant', 'Tour Packages', 'Conference Facilities'],
+                features: ['Mountain Views', 'Spa Services', 'Free WiFi', 'Airport Transfer']
+            }
+        };
+
+        // Sample reviews
+        const sampleReviews = [
+            {
+                name: 'Marie Uwimana',
+                rating: 5,
+                date: '2024-01-15',
+                comment: 'Amazing coffee and atmosphere! The best place to work or relax in Kigali.'
+            },
+            {
+                name: 'Jean Mugisha',
+                rating: 4,
+                date: '2024-01-10',
+                comment: 'Great service and delicious food. The local dishes are authentic and well-prepared.'
+            },
+            {
+                name: 'Sarah Niyonzima',
+                rating: 5,
+                date: '2024-01-05',
+                comment: 'Perfect for business meetings. The WiFi is fast and the coffee is excellent!'
+            }
+        ];
+
+        // Get business ID from URL
+        function getBusinessId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return parseInt(urlParams.get('id')) || 1;
+        }
+
+        // Load business details
+        function loadBusinessDetails() {
+            const businessId = getBusinessId();
+            const business = businessData[businessId] || businessData[1];
+            
+            // Update business information
+            document.getElementById('businessName').textContent = business.name;
+            document.getElementById('businessCategory').textContent = business.category;
+            document.getElementById('businessRating').textContent = generateStars(business.rating) + ' ' + business.rating;
+            document.getElementById('businessReviews').textContent = `(${business.reviews} reviews)`;
+            document.getElementById('businessImage').src = `assets/images/${business.image}`;
+            document.getElementById('businessDescription').textContent = business.description;
+            document.getElementById('businessLocation').textContent = business.location;
+            document.getElementById('businessPhone').textContent = business.phone;
+            document.getElementById('businessEmail').textContent = business.email;
+            document.getElementById('businessWebsite').textContent = business.website;
+            document.getElementById('businessWebsite').href = `https://${business.website}`;
+            document.getElementById('businessHours').textContent = business.hours;
+            
+            // Load services
+            const servicesContainer = document.getElementById('businessServices');
+            servicesContainer.innerHTML = '';
+            business.services.forEach(service => {
+                const badge = document.createElement('span');
+                badge.className = 'badge badge-info';
+                badge.textContent = service;
+                servicesContainer.appendChild(badge);
+            });
+            
+            // Load features
+            const featuresContainer = document.getElementById('businessFeatures');
+            featuresContainer.innerHTML = '';
+            business.features.forEach(feature => {
+                const badge = document.createElement('span');
+                badge.className = 'badge badge-success';
+                badge.textContent = feature;
+                featuresContainer.appendChild(badge);
+            });
+            
+            // Load reviews
+            loadReviews();
+            
+            // Load related businesses
+            loadRelatedBusinesses(business.category);
+        }
+
+        // Load reviews
+        function loadReviews() {
+            const reviewsList = document.getElementById('reviewsList');
+            reviewsList.innerHTML = '';
+            
+            sampleReviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'mb-3';
+                reviewDiv.style.paddingBottom = '1rem';
+                reviewDiv.style.borderBottom = '1px solid var(--border-color)';
+                reviewDiv.innerHTML = `
+                    <div class="d-flex justify-between align-center mb-2">
+                        <strong>${review.name}</strong>
+                        <small style="color: var(--text-light);">${review.date}</small>
+                    </div>
+                    <div class="mb-2">${generateStars(review.rating)}</div>
+                    <p style="margin: 0;">${review.comment}</p>
+                `;
+                reviewsList.appendChild(reviewDiv);
+            });
+        }
+
+        // Load related businesses
+        function loadRelatedBusinesses(currentCategory) {
+            const relatedContainer = document.getElementById('relatedBusinesses');
+            relatedContainer.innerHTML = '';
+            
+            // Get businesses in same category (excluding current)
+            const relatedBusinesses = Object.entries(businessData)
+                .filter(([id, business]) => business.category === currentCategory && parseInt(id) !== getBusinessId())
+                .slice(0, 3);
+            
+            relatedBusinesses.forEach(([id, business]) => {
+                const card = document.createElement('div');
+                card.className = 'card business-card';
+                card.innerHTML = `
+                    <img src="assets/images/${business.image}" alt="${business.name}" onerror="this.src='assets/images/placeholder.jpg'">
+                    <div class="card-body">
+                        <h3>${business.name}</h3>
+                        <p class="category">${business.category}</p>
+                        <div class="rating">
+                            ${generateStars(business.rating)} (${business.reviews} reviews)
+                        </div>
+                        <p>${business.description.substring(0, 100)}...</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" onclick="viewBusinessDetails(${id})">View Details</button>
+                    </div>
+                `;
+                relatedContainer.appendChild(card);
+            });
+        }
+
+        // Contact functions
+        function callBusiness() {
+            const businessId = getBusinessId();
+            const business = businessData[businessId] || businessData[1];
+            window.location.href = `tel:${business.phone}`;
+        }
+
+        function emailBusiness() {
+            const businessId = getBusinessId();
+            const business = businessData[businessId] || businessData[1];
+            window.location.href = `mailto:${business.email}`;
+        }
+
+        function sendMessage() {
+            alert('Please login to send messages to businesses. You can also call them directly using the phone number provided.');
+        }
+
+        function getDirections() {
+            const businessId = getBusinessId();
+            const business = businessData[businessId] || businessData[1];
+            // In a real app, this would open Google Maps with the business location
+            alert(`Directions to ${business.name}: ${business.location}\n\nThis would open Google Maps with the business location.`);
+        }
+
+        // Share functions
+        function shareOnFacebook() {
+            const url = window.location.href;
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareOnTwitter() {
+            const businessId = getBusinessId();
+            const business = businessData[businessId] || businessData[1];
+            const text = `Check out ${business.name} on YusKar Business Hub!`;
+            const url = window.location.href;
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareOnWhatsApp() {
+            const url = window.location.href;
+            window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showAlert('Link copied to clipboard!', 'success');
+            });
+        }
+
+        function writeReview() {
+            alert('Please login to write a review. Your feedback helps other customers make informed decisions.');
+        }
+
+        // Load business details on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBusinessDetails();
+        });
+    </script>
+</body>
+</html>

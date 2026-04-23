@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YusKar Business Hub - Vercel Ready</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">YusKar Business Hub</div>
+            <ul class="nav-links">
+                <li><a href="vercel-ready.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="businesses.html">Businesses</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to YusKar Business Hub</h1>
+            <p>Discover, Connect, and Grow with Rwanda's Premier Business Marketplace</p>
+            <div class="hero-buttons">
+                <a href="businesses.html" class="btn btn-outline">Explore Businesses</a>
+                <a href="signup.html" class="btn btn-primary">Join Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Businesses Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Businesses</h2>
+                <p>Discover top-rated businesses across Rwanda</p>
+            </div>
+            <div class="grid grid-3" id="featuredBusinesses">
+                <!-- Businesses will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Environment Status -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Environment Status</h2>
+            </div>
+            <div id="envStatus">
+                <p>Loading environment variables...</p>
+            </div>
+        </div>
+    </section>
+
+    <script type="module">
+        // Vercel Environment Variables Support
+        const statusDiv = document.getElementById('envStatus');
+        const businessesDiv = document.getElementById('featuredBusinesses');
+        
+        function updateStatus(message, type = 'info') {
+            const colors = {
+                info: 'blue',
+                success: 'green',
+                error: 'red',
+                warning: 'orange'
+            };
+            const div = document.createElement('div');
+            div.style.cssText = `color: ${colors[type]}; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px;`;
+            div.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+            statusDiv.appendChild(div);
+        }
+
+        // Load environment variables (works on Vercel)
+        async function loadEnvironment() {
+            try {
+                // Try to load environment variables
+                const envVars = {
+                    supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
+                    supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+                    preferredBackend: import.meta.env.VITE_PREFERRED_BACKEND,
+                    appName: import.meta.env.VITE_APP_NAME
+                };
+
+                updateStatus('Environment variables: LOADING', 'info');
+
+                // Check if environment variables are available
+                if (envVars.supabaseUrl && envVars.supabaseUrl !== 'https://your-project-ref.supabase.co') {
+                    updateStatus('Supabase URL: CONFIGURED', 'success');
+                    updateStatus('Environment: VERCEL - Working!', 'success');
+                    
+                    // Load Supabase and show real data
+                    await loadSupabaseData(envVars);
+                } else {
+                    updateStatus('Environment variables: NOT CONFIGURED', 'warning');
+                    updateStatus('Add environment variables in Vercel dashboard', 'warning');
+                    updateStatus('Using mock data for now', 'info');
+                    showMockBusinesses();
+                }
+
+            } catch (error) {
+                updateStatus('Environment loading: FAILED - ' + error.message, 'error');
+                showMockBusinesses();
+            }
+        }
+
+        async function loadSupabaseData(envVars) {
+            try {
+                // Load Supabase
+                const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+                const supabase = createClient(envVars.supabaseUrl, envVars.supabaseKey);
+                
+                updateStatus('Supabase client: CONNECTED', 'success');
+                
+                // Fetch real businesses (when database is set up)
+                const { data, error } = await supabase
+                    .from('businesses')
+                    .select('*')
+                    .eq('status', 'approved')
+                    .limit(6);
+                
+                if (error) {
+                    updateStatus('Database query: FAILED - ' + error.message, 'warning');
+                    showMockBusinesses();
+                } else {
+                    updateStatus('Database: CONNECTED', 'success');
+                    showRealBusinesses(data);
+                }
+                
+            } catch (error) {
+                updateStatus('Supabase connection: FAILED - ' + error.message, 'error');
+                showMockBusinesses();
+            }
+        }
+
+        function showRealBusinesses(businesses) {
+            businessesDiv.innerHTML = '';
+            businesses.forEach(business => {
+                const card = createBusinessCard(business);
+                businessesDiv.appendChild(card);
+            });
+        }
+
+        function showMockBusinesses() {
+            const mockBusinesses = [
+                {
+                    id: 1,
+                    business_name: 'Kigali Coffee House',
+                    category: 'Restaurant & Café',
+                    description: 'Premium coffee and authentic Rwandan cuisine',
+                    rating: 4.8,
+                    review_count: 127
+                },
+                {
+                    id: 2,
+                    business_name: 'Rwanda Tech Solutions',
+                    category: 'Technology',
+                    description: 'Innovative software development and IT consulting',
+                    rating: 4.9,
+                    review_count: 89
+                },
+                {
+                    id: 3,
+                    business_name: 'Mountain View Hotel',
+                    category: 'Hospitality',
+                    description: 'Luxury accommodation with stunning views',
+                    rating: 4.7,
+                    review_count: 156
+                }
+            ];
+
+            businessesDiv.innerHTML = '';
+            mockBusinesses.forEach(business => {
+                const card = createBusinessCard(business);
+                businessesDiv.appendChild(card);
+            });
+        }
+
+        function createBusinessCard(business) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3>${business.business_name || business.name}</h3>
+                    <span class="badge">${business.category || 'Business'}</span>
+                </div>
+                <div class="card-body">
+                    <p>${business.description}</p>
+                    <div class="rating">
+                        <span>Rating: ${business.rating || 4.5} (${business.review_count || business.reviews || 0} reviews)</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary" onclick="viewBusiness(${business.id})">View Details</button>
+                </div>
+            `;
+            return card;
+        }
+
+        function viewBusiness(id) {
+            alert(`View details for business ${id}`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadEnvironment);
+    </script>
+</body>
+</html>
