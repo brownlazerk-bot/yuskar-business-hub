@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error-Free Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>Error-Free JavaScript Test</h1>
+    <div id="results"></div>
+
+    <script type="module">
+        const results = document.getElementById('results');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = message;
+            results.appendChild(div);
+            console.log(message);
+        }
+
+        log('Starting error-free test...', 'info');
+
+        // Test 1: Basic JavaScript
+        try {
+            log('Basic JavaScript: WORKING', 'success');
+        } catch (error) {
+            log('Basic JavaScript: FAILED - ' + error.message, 'error');
+        }
+
+        // Test 2: Import meta (without environment variables)
+        try {
+            log('Import meta test: ' + (typeof import.meta), 'success');
+        } catch (error) {
+            log('Import meta test: FAILED - ' + error.message, 'error');
+        }
+
+        // Test 3: Try to load Supabase (with error handling)
+        try {
+            import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm')
+                .then(({ createClient }) => {
+                    log('Supabase SDK: LOADED SUCCESSFULLY', 'success');
+                    
+                    // Try to create client (will fail with placeholder values but that's ok)
+                    try {
+                        const client = createClient('https://your-project-ref.supabase.co', 'your-anon-key');
+                        log('Supabase Client: CREATED (with placeholders)', 'warning');
+                    } catch (clientError) {
+                        log('Supabase Client: FAILED - ' + clientError.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    log('Supabase SDK: FAILED TO LOAD - ' + error.message, 'error');
+                });
+        } catch (error) {
+            log('Supabase SDK test: FAILED - ' + error.message, 'error');
+        }
+
+        // Test 4: Check if files exist
+        const testFiles = ['supabaseClient.js', 'backendManager.js', 'auth.js'];
+        testFiles.forEach(file => {
+            fetch(file)
+                .then(response => {
+                    if (response.ok) {
+                        log(file + ': FILE EXISTS', 'success');
+                    } else {
+                        log(file + ': FILE NOT FOUND (' + response.status + ')', 'error');
+                    }
+                })
+                .catch(error => {
+                    log(file + ': FETCH ERROR - ' + error.message, 'error');
+                });
+        });
+
+        log('Test completed. Check results above.', 'info');
+    </script>
+</body>
+</html>

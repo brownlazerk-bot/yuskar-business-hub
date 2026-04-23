@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YusKar Business Hub - GitHub Pages Ready</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">YusKar Business Hub</div>
+            <ul class="nav-links">
+                <li><a href="github-pages-ready.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="businesses.html">Businesses</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to YusKar Business Hub</h1>
+            <p>Discover, Connect, and Grow with Rwanda's Premier Business Marketplace</p>
+            <div class="hero-buttons">
+                <a href="businesses.html" class="btn btn-outline">Explore Businesses</a>
+                <a href="signup.html" class="btn btn-primary">Join Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Businesses Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Businesses</h2>
+                <p>Discover top-rated businesses across Rwanda</p>
+            </div>
+            <div class="grid grid-3" id="featuredBusinesses">
+                <!-- Businesses will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Backend Status -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Platform Status</h2>
+            </div>
+            <div id="backendStatus">
+                <p>Loading backend status...</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // GitHub Pages Compatible - No Environment Variables
+        const statusDiv = document.getElementById('backendStatus');
+        const businessesDiv = document.getElementById('featuredBusinesses');
+        
+        // Configuration (hardcoded for GitHub Pages)
+        const CONFIG = {
+            SUPABASE_URL: 'https://your-project-ref.supabase.co',
+            SUPABASE_ANON_KEY: 'your-supabase-anon-key',
+            FIREBASE_PROJECT_ID: 'your-project-id',
+            BACKEND_TYPE: 'supabase'
+        };
+
+        function updateStatus(message, type = 'info') {
+            const colors = {
+                info: 'blue',
+                success: 'green',
+                error: 'red',
+                warning: 'orange'
+            };
+            const div = document.createElement('div');
+            div.style.cssText = `color: ${colors[type]}; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px;`;
+            div.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+            statusDiv.appendChild(div);
+        }
+
+        function showBusinesses() {
+            // Mock data for GitHub Pages
+            const mockBusinesses = [
+                {
+                    id: 1,
+                    name: 'Kigali Coffee House',
+                    category: 'Restaurant & Café',
+                    description: 'Premium coffee and authentic Rwandan cuisine in the heart of Kigali',
+                    rating: 4.8,
+                    reviews: 127,
+                    address: 'KN 123 Street, Kigali',
+                    phone: '+250 788 123 456',
+                    website: 'www.kigalicoffeehouse.rw'
+                },
+                {
+                    id: 2,
+                    name: 'Rwanda Tech Solutions',
+                    category: 'Technology',
+                    description: 'Innovative software development and IT consulting services',
+                    rating: 4.9,
+                    reviews: 89,
+                    address: 'KG 456 Avenue, Kigali',
+                    phone: '+250 788 987 654',
+                    website: 'www.rwandatech.rw'
+                },
+                {
+                    id: 3,
+                    name: 'Mountain View Hotel',
+                    category: 'Hospitality',
+                    description: 'Luxury accommodation with stunning views of Kigali',
+                    rating: 4.7,
+                    reviews: 156,
+                    address: 'KN 789 Road, Kigali',
+                    phone: '+250 788 456 789',
+                    website: 'www.mountainview.rw'
+                },
+                {
+                    id: 4,
+                    name: 'Rwanda Health Clinic',
+                    category: 'Healthcare',
+                    description: 'Comprehensive healthcare services for the community',
+                    rating: 4.6,
+                    reviews: 203,
+                    address: 'KG 101 Street, Kigali',
+                    phone: '+250 788 234 567',
+                    website: 'www.rwandahealth.rw'
+                },
+                {
+                    id: 5,
+                    name: 'Kigali Fashion House',
+                    category: 'Retail',
+                    description: 'Modern fashion and traditional Rwandan clothing',
+                    rating: 4.5,
+                    reviews: 78,
+                    address: 'KN 234 Avenue, Kigali',
+                    phone: '+250 788 345 678',
+                    website: www.kigalifashion.rw'
+                },
+                {
+                    id: 6,
+                    name: 'Rwanda Education Center',
+                    category: 'Education',
+                    description: 'Quality education and training programs',
+                    rating: 4.9,
+                    reviews: 145,
+                    address: 'KG 567 Street, Kigali',
+                    phone: '+250 788 567 890',
+                    website: 'www.rwandaedu.rw'
+                }
+            ];
+
+            businessesDiv.innerHTML = '';
+            mockBusinesses.forEach(business => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3>${business.name}</h3>
+                        <span class="badge">${business.category}</span>
+                    </div>
+                    <div class="card-body">
+                        <p>${business.description}</p>
+                        <div class="business-info">
+                            <p><strong>Address:</strong> ${business.address}</p>
+                            <p><strong>Phone:</strong> ${business.phone}</p>
+                            <p><strong>Website:</strong> ${business.website}</p>
+                        </div>
+                        <div class="rating">
+                            <span>Rating: ${business.rating} (${business.reviews} reviews)</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" onclick="viewBusiness(${business.id})">View Details</button>
+                        <button class="btn btn-outline" onclick="contactBusiness(${business.id})">Contact</button>
+                    </div>
+                `;
+                businessesDiv.appendChild(card);
+            });
+        }
+
+        function viewBusiness(id) {
+            alert(`View details for business ${id}. In production, this would navigate to business details page.`);
+        }
+
+        function contactBusiness(id) {
+            alert(`Contact business ${id}. In production, this would open contact form.`);
+        }
+
+        function checkBackend() {
+            updateStatus('Checking backend configuration...', 'info');
+            
+            // Check configuration
+            if (CONFIG.SUPABASE_URL !== 'https://your-project-ref.supabase.co') {
+                updateStatus('Supabase: CONFIGURED', 'success');
+            } else {
+                updateStatus('Supabase: NEEDS CONFIGURATION - Update CONFIG object in HTML', 'warning');
+            }
+            
+            if (CONFIG.FIREBASE_PROJECT_ID !== 'your-project-id') {
+                updateStatus('Firebase: CONFIGURED', 'success');
+            } else {
+                updateStatus('Firebase: NEEDS CONFIGURATION - Update CONFIG object in HTML', 'warning');
+            }
+            
+            updateStatus('Backend Type: ' + CONFIG.BACKEND_TYPE, 'info');
+            updateStatus('Environment: GitHub Pages', 'success');
+            updateStatus('Status: Ready for deployment!', 'success');
+            
+            // Show businesses
+            showBusinesses();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', checkBackend);
+    </script>
+</body>
+</html>

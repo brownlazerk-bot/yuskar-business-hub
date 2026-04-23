@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - YusKar Business Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Dashboard Layout -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>🏢 YusKar Hub</h3>
+                <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">User Dashboard</p>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="#" data-section="overview" class="active">📊 Overview</a></li>
+                <li><a href="#" data-section="profile">👤 Profile</a></li>
+                <li><a href="#" data-section="my-businesses">🏢 My Businesses</a></li>
+                <li><a href="#" data-section="subscription">💳 Subscription</a></li>
+                <li><a href="#" data-section="notifications">🔔 Notifications</a></li>
+                <li><a href="#" data-section="settings">⚙️ Settings</a></li>
+                <li><a href="#" onclick="logout()" style="color: #e74c3c;">🚪 Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div>
+                    <h2>Welcome back, <span id="userName">User</span>!</h2>
+                    <p style="color: var(--text-light); margin: 0;">Manage your businesses and track performance</p>
+                </div>
+                <div class="d-flex align-center">
+                    <div style="position: relative; margin-right: 1rem;">
+                        <button id="notificationBell" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; position: relative;">
+                            🔔
+                            <span style="position: absolute; top: 0; right: 0; background: var(--accent-color); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center;">3</span>
+                        </button>
+                        <div id="notificationDropdown" style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 5px; box-shadow: var(--shadow-lg); min-width: 300px; z-index: 1000;">
+                            <div style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                                <h4>Notifications</h4>
+                            </div>
+                            <div style="max-height: 300px; overflow-y: auto;">
+                                <div style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                                    <div style="font-weight: 500; margin-bottom: 0.25rem;">New business review</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Your business received a 5-star rating!</div>
+                                    <small style="color: var(--text-light);">2 hours ago</small>
+                                </div>
+                                <div style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                                    <div style="font-weight: 500; margin-bottom: 0.25rem;">Subscription reminder</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Your subscription expires in 5 days</div>
+                                    <small style="color: var(--text-light);">1 day ago</small>
+                                </div>
+                                <div style="padding: 1rem;">
+                                    <div style="font-weight: 500; margin-bottom: 0.25rem;">Profile update successful</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Your business information has been updated</div>
+                                    <small style="color: var(--text-light);">3 days ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="window.location.href='businesses.html'">Browse Businesses</button>
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <section id="overview" class="dashboard-section">
+                <h3>Dashboard Overview</h3>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">🏢</div>
+                        <div class="stat-content">
+                            <h3 id="totalBusinesses">3</h3>
+                            <p>My Businesses</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">⭐</div>
+                        <div class="stat-content">
+                            <h3 id="avgRating">4.6</h3>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">👁️</div>
+                        <div class="stat-content">
+                            <h3 id="totalViews">2,847</h3>
+                            <p>Total Views</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">📞</div>
+                        <div class="stat-content">
+                            <h3 id="totalContacts">156</h3>
+                            <p>Contact Requests</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="grid grid-2" style="margin-top: 2rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Recent Activity</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3" style="padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>New review on Rwanda Coffee House</strong>
+                                        <div style="color: var(--text-light); font-size: 0.9rem;">5-star rating from Marie U.</div>
+                                    </div>
+                                    <small style="color: var(--text-light);">2h ago</small>
+                                </div>
+                            </div>
+                            <div class="mb-3" style="padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Profile updated</strong>
+                                        <div style="color: var(--text-light); font-size: 0.9rem;">Business information modified</div>
+                                    </div>
+                                    <small style="color: var(--text-light);">1d ago</small>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>New contact request</strong>
+                                        <div style="color: var(--text-light); font-size: 0.9rem;">Potential customer inquiry</div>
+                                    </div>
+                                    <small style="color: var(--text-light);">3d ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Quick Actions</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid" style="gap: 1rem;">
+                                <button class="btn btn-primary w-100" onclick="showSection('my-businesses')">➕ Add New Business</button>
+                                <button class="btn btn-outline w-100" onclick="showSection('subscription')">⬆️ Upgrade Subscription</button>
+                                <button class="btn btn-outline w-100" onclick="window.location.href='businesses.html'">🔍 Browse Businesses</button>
+                                <button class="btn btn-outline w-100" onclick="showSection('profile')">✏️ Edit Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="dashboard-section" style="display: none;">
+                <h3>Profile Information</h3>
+                
+                <div class="grid grid-2">
+                    <div class="profile-card">
+                        <div class="profile-avatar">👤</div>
+                        <h3 class="profile-name" id="profileName">John Doe</h3>
+                        <p class="profile-email" id="profileEmail">john@example.com</p>
+                        <button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Account Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label><strong>Full Name:</strong></label>
+                                <p id="profileFullName">John Doe</p>
+                            </div>
+                            <div class="mb-3">
+                                <label><strong>Email:</strong></label>
+                                <p id="profileEmail2">john@example.com</p>
+                            </div>
+                            <div class="mb-3">
+                                <label><strong>Phone:</strong></label>
+                                <p id="profilePhone">+250 788 123 456</p>
+                            </div>
+                            <div class="mb-3">
+                                <label><strong>Member Since:</strong></label>
+                                <p id="memberSince">January 15, 2024</p>
+                            </div>
+                            <div class="mb-3">
+                                <label><strong>Account Type:</strong></label>
+                                <p><span class="badge badge-success">Business Owner</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Businesses Section -->
+            <section id="my-businesses" class="dashboard-section" style="display: none;">
+                <div class="d-flex justify-between align-center mb-4">
+                    <h3>My Businesses</h3>
+                    <button class="btn btn-primary" onclick="addNewBusiness()">➕ Add New Business</button>
+                </div>
+                
+                <div class="grid grid-2" id="myBusinessesList">
+                    <!-- Businesses will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Subscription Section -->
+            <section id="subscription" class="dashboard-section" style="display: none;">
+                <h3>Subscription Status</h3>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-between align-center">
+                            <div>
+                                <h4>Professional Plan</h4>
+                                <p style="color: var(--text-light);">Enhanced features and priority visibility</p>
+                                <p><strong>$29/month</strong></p>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-success">Active</span>
+                                <p style="margin-top: 1rem;"><small>Renews on February 15, 2024</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Plan Features</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 0.5rem;">✓ Enhanced business profile</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Up to 20 photos</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Video uploads</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Advanced analytics</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Priority visibility</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Basic advertising</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="upgradePlan()">Upgrade to Enterprise</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications" class="dashboard-section" style="display: none;">
+                <h3>Notifications</h3>
+                
+                <div class="notifications-panel" id="notificationsPanel">
+                    <!-- Notifications will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="dashboard-section" style="display: none;">
+                <h3>Settings</h3>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Account Settings</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="settingsForm">
+                            <div class="form-group">
+                                <label for="settingsEmail">Email Address</label>
+                                <input type="email" id="settingsEmail" class="form-control" value="john@example.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="settingsPhone">Phone Number</label>
+                                <input type="tel" id="settingsPhone" class="form-control" value="+250 788 123 456">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="d-flex align-center">
+                                    <input type="checkbox" id="emailNotifications" checked style="margin-right: 10px;">
+                                    Receive email notifications
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="d-flex align-center">
+                                    <input type="checkbox" id="smsNotifications" style="margin-right: 10px;">
+                                    Receive SMS notifications
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Load user data
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            loadMyBusinesses();
+            loadNotifications();
+            initializeDashboard();
+        });
+
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            document.getElementById('userName').textContent = user.name || 'User';
+            document.getElementById('profileName').textContent = user.name || 'User';
+            document.getElementById('profileEmail').textContent = user.email || 'user@example.com';
+            document.getElementById('profileEmail2').textContent = user.email || 'user@example.com';
+            document.getElementById('profileFullName').textContent = user.name || 'User';
+            document.getElementById('profilePhone').textContent = user.phone || '+250 788 123 456';
+            document.getElementById('memberSince').textContent = 'January 15, 2024';
+        }
+
+        function loadMyBusinesses() {
+            const businesses = [
+                {
+                    id: 1,
+                    name: 'Rwanda Coffee House',
+                    category: 'Food & Beverage',
+                    rating: 4.5,
+                    views: 1234,
+                    contacts: 45,
+                    status: 'Active'
+                },
+                {
+                    id: 2,
+                    name: 'Kigali Tech Solutions',
+                    category: 'Technology',
+                    rating: 4.8,
+                    views: 856,
+                    contacts: 67,
+                    status: 'Active'
+                },
+                {
+                    id: 3,
+                    name: 'Mountain View Lodge',
+                    category: 'Hospitality',
+                    rating: 4.3,
+                    views: 757,
+                    contacts: 44,
+                    status: 'Active'
+                }
+            ];
+
+            const container = document.getElementById('myBusinessesList');
+            container.innerHTML = '';
+
+            businesses.forEach(business => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-body">
+                        <div class="d-flex justify-between align-center mb-3">
+                            <h4>${business.name}</h4>
+                            <span class="badge badge-success">${business.status}</span>
+                        </div>
+                        <p class="category">${business.category}</p>
+                        <div class="rating mb-3">
+                            ${generateStars(business.rating)} ${business.rating}
+                        </div>
+                        <div class="grid grid-3 text-center mb-3">
+                            <div>
+                                <strong>${business.views}</strong>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">Views</div>
+                            </div>
+                            <div>
+                                <strong>${business.contacts}</strong>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">Contacts</div>
+                            </div>
+                            <div>
+                                <strong>${business.rating}</strong>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">Rating</div>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary btn-sm" onclick="editBusiness(${business.id})">Edit</button>
+                            <button class="btn btn-outline btn-sm" onclick="viewBusinessAnalytics(${business.id})">Analytics</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function initializeDashboard() {
+            // Sidebar menu functionality
+            document.querySelectorAll('.sidebar-menu a[data-section]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                    
+                    // Update active state
+                    document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        }
+
+        function editProfile() {
+            showAlert('Profile editing feature coming soon!', 'info');
+        }
+
+        function addNewBusiness() {
+            showAlert('Add business feature coming soon!', 'info');
+        }
+
+        function editBusiness(businessId) {
+            showAlert(`Editing business ${businessId}`, 'info');
+        }
+
+        function viewBusinessAnalytics(businessId) {
+            showAlert(`Viewing analytics for business ${businessId}`, 'info');
+        }
+
+        function upgradePlan() {
+            showAlert('Upgrade to Enterprise plan for $99/month', 'info');
+        }
+
+        // Settings form submission
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showAlert('Settings saved successfully!', 'success');
+        });
+    </script>
+</body>
+</html>
